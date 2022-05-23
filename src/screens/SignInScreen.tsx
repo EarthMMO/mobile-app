@@ -1,83 +1,63 @@
-import * as SecureStore from "expo-secure-store";
-import { Alert, Button, StyleSheet, Text } from "react-native";
-import { useEffect, useState } from "react";
+import * as Haptics from "expo-haptics";
+import tw from "utils/tailwind";
+import { Alert, Text, View } from "react-native";
+import { useState } from "react";
 
-import useColorScheme from "hooks/useColorScheme";
+import Button from "components/Button";
 import useUserStore from "stores/user";
-import { View } from "components/Themed";
+import useWallet from "hooks/useWallet";
 import { createOrImportWallet } from "utils/wallet";
 
 export default function SignInScreen() {
-  const colorScheme = useColorScheme();
-  //const [wallet, setWallet] = useState(null);
+  const [createSpinner, setCreateSpinner] = useState(false);
+  const [importSpinner, setImportSpinner] = useState(false);
   const [user, updateUser] = useUserStore((state) => [
     state.user,
     state.updateUser,
   ]);
-
-  //useEffect(() => {
-  //  async function getUserAddress() {
-  //    const wallet = await SecureStore.getItemAsync("wallet");
-  //    setWallet(JSON.parse(wallet!));
-  //  }
-
-  //  getUserAddress();
-  //}, [user.isSignedIn]);
-
-  const textTheme =
-    colorScheme === "light" ? styles.lightText : styles.darkText;
+  const wallet = useWallet();
 
   return (
-    <View style={styles.container}>
+    <View style={tw`flex-1 items-center justify-center bg-white`}>
       <Button
         onPress={async () => {
+          setCreateSpinner(true);
           const response = await createOrImportWallet();
           updateUser({ ...response, isSignedIn: true });
+          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+          setCreateSpinner(false);
         }}
-        title="Create Wallet"
+        buttonStyle={"bg-black"}
+        labelStyle={"text-white font-bold"}
+        spinner={createSpinner}
+        spinnerProps={{
+          color: "white",
+        }}
+        text="Create Wallet"
       />
+      <View style={tw`mb-8`} />
       <Button
         onPress={() => {
           Alert.prompt("Import Wallet", "", async (text) => {
+            setImportSpinner(true);
             const response = await createOrImportWallet(text);
             updateUser({ ...response, isSignedIn: true });
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+            setImportSpinner(false);
           });
         }}
-        title="Import Wallet"
+        buttonStyle={"bg-white"}
+        labelStyle={"font-bold"}
+        spinner={importSpinner}
+        spinnerProps={{
+          color: "black",
+        }}
+        text="Import Wallet"
       />
       {/*
-      <Button
-        onPress={async () => {
-          const wallet = await SecureStore.getItemAsync("wallet");
-          console.log("WALLET", JSON.parse(wallet!));
-          console.log("USER", JSON.stringify(user));
-          Alert.alert("LOGGING");
-        }}
-        title="Console Log"
-      />
       <Text>{"USER " + JSON.stringify(user)}</Text>
       <Text>{"WALLET " + JSON.stringify(wallet)}</Text>
       */}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  text: {
-    fontSize: 16,
-    lineHeight: 21,
-    fontWeight: "bold",
-    letterSpacing: 0.25,
-  },
-  lightText: {
-    color: "white",
-  },
-  darkText: {
-    color: "black",
-  },
-});
