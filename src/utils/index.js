@@ -1,5 +1,5 @@
 //import fakeAuth from "fake-auth";
-import { BACKEND_API_URL } from "config/config";
+import { BACKEND_API_URL } from "config";
 
 export function apiRequest(path, method = "GET", jwt, data) {
   //const accessToken = fakeAuth.getAccessToken();
