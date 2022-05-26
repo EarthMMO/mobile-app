@@ -4,8 +4,8 @@
  *
  */
 import * as SecureStore from "expo-secure-store";
-import { ColorSchemeName, Pressable } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
+import { ColorSchemeName, Pressable, Text } from "react-native";
+import { FontAwesome, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
@@ -16,13 +16,15 @@ import {
 } from "@react-navigation/native";
 
 import Colors from "constants/Colors";
+import EventsScreen from "screens/EventsScreen";
 import LinkingConfiguration from "navigation/LinkingConfiguration";
-import ModalScreen from "screens/ModalScreen";
+import DarkModeScreen from "screens/DarkModeScreen";
+import SettingsModalScreen from "screens/SettingsModalScreen";
 import NotFoundScreen from "screens/NotFoundScreen";
+import ProfileScreen from "screens/ProfileScreen";
 import SignInScreen from "screens/SignInScreen";
 import SplashScreen from "screens/SplashScreen";
-import TabOneScreen from "screens/TabOneScreen";
-import TabTwoScreen from "screens/TabTwoScreen";
+import tw from "utils/tailwind";
 import useColorScheme from "hooks/useColorScheme";
 import useUserStore from "stores/user";
 import {
@@ -51,6 +53,45 @@ export default function Navigation({
  * https://reactnavigation.org/docs/modal
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
+const ModalStack = createNativeStackNavigator<RootStackParamList>();
+
+const ModalStackView = () => (
+  <ModalStack.Navigator>
+    <ModalStack.Screen
+      name="SettingsModal"
+      component={SettingsModalScreen}
+      options={({ navigation }) => ({
+        headerShadowVisible: false,
+        headerStyle: {
+          backgroundColor: "#fafafa", // bg-neutral-50
+        },
+        headerTitle: "",
+        headerRight: () => (
+          <Pressable
+            onPress={() => navigation.goBack()}
+            style={({ pressed }) => ({
+              opacity: pressed ? 0.5 : 1,
+            })}
+          >
+            <Text style={tw`text-base font-bold`}>Done</Text>
+          </Pressable>
+        ),
+      })}
+    />
+    <ModalStack.Screen
+      name="DarkMode"
+      component={DarkModeScreen}
+      options={{
+        headerShadowVisible: false,
+        headerStyle: {
+          backgroundColor: "#fafafa", // bg-neutral-50
+        },
+        headerTitle: "Dark mode",
+        presentation: "card",
+      }}
+    />
+  </ModalStack.Navigator>
+);
 
 function RootNavigator() {
   const [isLoadingAddress, setIsLoadingAddress] = useState(true);
@@ -66,11 +107,13 @@ function RootNavigator() {
       if (user.isSignedIn || walletString !== null) {
         const wallet = JSON.parse(walletString!);
         const ethereumAddress = wallet.ethereumAddress;
+        const jwt = wallet.jwt;
         const userId = wallet.userId;
         updateUser({
           ethereumAddress,
-          userId,
           isSignedIn: true,
+          jwt,
+          userId,
         });
         setUserAddress(ethereumAddress);
       } else {
@@ -108,7 +151,11 @@ function RootNavigator() {
         options={{ title: "Oops!" }}
       />
       <Stack.Group screenOptions={{ presentation: "modal" }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
+        <Stack.Screen
+          name="Modal"
+          component={ModalStackView}
+          options={{ headerShown: false }}
+        />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -125,17 +172,33 @@ function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="Events"
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
+        tabBarActiveTintColor: Colors[colorScheme].text,
       }}
     >
       <BottomTab.Screen
-        name="TabOne"
-        component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<"TabOne">) => ({
-          title: "Tab One",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        name="Events"
+        component={EventsScreen}
+        options={({ navigation }: RootTabScreenProps<"Events">) => ({
+          title: "Events",
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon library="MaterialIcons" name="event" color={color} />
+          ),
+        })}
+      />
+      <BottomTab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={({ navigation }: RootTabScreenProps<"Profile">) => ({
+          title: "Profile",
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon
+              library="Ionicons"
+              name="person-circle-outline"
+              color={color}
+            />
+          ),
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate("Modal")}
@@ -144,7 +207,7 @@ function BottomTabNavigator() {
               })}
             >
               <FontAwesome
-                name="info-circle"
+                name="cog"
                 size={25}
                 color={Colors[colorScheme].text}
                 style={{ marginRight: 15 }}
@@ -153,14 +216,6 @@ function BottomTabNavigator() {
           ),
         })}
       />
-      <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoScreen}
-        options={{
-          title: "Tab Two",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      />
     </BottomTab.Navigator>
   );
 }
@@ -168,9 +223,15 @@ function BottomTabNavigator() {
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
  */
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>["name"];
-  color: string;
-}) {
-  return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
+function TabBarIcon(props: { color: string; library: string; name: string }) {
+  switch (props.library) {
+    case "Ionicons":
+      return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
+    case "MaterialIcons":
+      return (
+        <MaterialIcons size={30} style={{ marginBottom: -3 }} {...props} />
+      );
+    default:
+      return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
+  }
 }

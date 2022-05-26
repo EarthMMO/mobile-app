@@ -26,7 +26,7 @@ export const createOrImportWallet = async (importedMnemonics = "") => {
 
     const signature = await wallet.signMessage(Buffer.from("hello"));
 
-    const response = await apiRequest("v0/user", "POST", {
+    const response = await apiRequest("v0/user", "POST", "Bearer accessToken", {
       ethereumAddress,
       signature,
     });
@@ -37,13 +37,14 @@ export const createOrImportWallet = async (importedMnemonics = "") => {
       "wallet",
       JSON.stringify({
         ethereumAddress,
+        jwt: response.jwt,
         mnemonics,
         privateKey,
         userId: response.userId,
       })
     );
 
-    return { ethereumAddress, userId: response.userId };
+    return { ethereumAddress, jwt: response.jwt, userId: response.userId };
   } catch (error) {
     console.log(error);
   }

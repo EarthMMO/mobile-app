@@ -1,14 +1,14 @@
 //import fakeAuth from "fake-auth";
 import { BACKEND_API_URL } from "config/config";
 
-export function apiRequest(path, method = "GET", data) {
+export function apiRequest(path, method = "GET", jwt, data) {
   //const accessToken = fakeAuth.getAccessToken();
 
   return fetch(`${BACKEND_API_URL}/api/${path}`, {
     method: method,
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${"accessToken"}`,
+      Authorization: jwt,
     },
     body: data ? JSON.stringify(data) : undefined,
   })

@@ -6,6 +6,7 @@ const userStore = (set) => ({
   user: {
     ethereumAddress: "",
     userId: null,
+    jwt: "",
     isSignedIn: false,
     //  email: "",
     //  userId: "",
@@ -26,7 +27,7 @@ const userStore = (set) => ({
   //registrationPath: "PERSONAL_DETAILS",
 
   // update functions
-  updateUser: (data) => set((state) => ({ user: { ...state.user, ...data } })), // here data can be subset of all the properties of userDetails
+  updateUser: (data) => set((state) => ({ user: { ...state.user, ...data } })), // here data can be subset of all the properties of user
 
   //updatePersonalData: (data) => set((state) => ({ personalData: data })),
 
