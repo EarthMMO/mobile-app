@@ -7,7 +7,7 @@ import { useState } from "react";
 import Button from "components/Button";
 import useUserStore from "stores/user";
 import useWallet from "hooks/useWallet";
-import { createOrImportWallet } from "utils/wallet";
+import { createOrImportWallet } from "utils";
 
 export default function SignInScreen() {
   const [isCreating, setIsCreating] = useState(false);
@@ -30,7 +30,7 @@ export default function SignInScreen() {
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
           setIsCreating(true);
           const response = await createOrImportWallet();
-          updateUser({ ...response, isSignedIn: true });
+          updateUser({ ...response });
           Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
           setIsCreating(false);
         }}
@@ -52,7 +52,7 @@ export default function SignInScreen() {
           Alert.prompt("Import Wallet", "", async (text) => {
             setIsImporting(true);
             const response = await createOrImportWallet(text);
-            updateUser({ ...response, isSignedIn: true });
+            updateUser({ ...response });
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
             setIsImporting(false);
           });

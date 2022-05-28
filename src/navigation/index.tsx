@@ -107,12 +107,10 @@ function RootNavigator() {
       if (user.isSignedIn || walletString !== null) {
         const wallet = JSON.parse(walletString!);
         const ethereumAddress = wallet.ethereumAddress;
-        const jwt = wallet.jwt;
         const userId = wallet.userId;
         updateUser({
           ethereumAddress,
           isSignedIn: true,
-          jwt,
           userId,
         });
         setUserAddress(ethereumAddress);

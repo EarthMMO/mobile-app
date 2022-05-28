@@ -31,10 +31,10 @@ export default function EventsScreen({
   useEffect(() => {
     async function fetchEvents() {
       try {
-        const events = await apiRequest("v0/event", "GET", user.jwt);
+        const events = await apiRequest("v0/event", "GET");
         setEvents(events);
         setIsFetching(false);
-        console.log(events);
+        console.log("EVENTS", events);
       } catch (error) {
         console.log("ERROR", error);
       }
@@ -72,7 +72,7 @@ export default function EventsScreen({
   async function onRefresh() {
     try {
       setIsFetching(true);
-      const events = await apiRequest("v0/event", "GET", user.jwt);
+      const events = await apiRequest("v0/event", "GET");
       setEvents(events);
       setIsFetching(false);
       console.log(events);
@@ -97,6 +97,10 @@ export default function EventsScreen({
 
   return (
     <View style={tw`flex-1 items-center bg-neutral-50 dark:bg-neutral-900`}>
+      {/*
+      <Text>{currentWallet.jwt}</Text>
+      <Text>{JSON.stringify(user)}</Text>
+      */}
       <FlatList
         data={events}
         renderItem={({ item, index }) => (

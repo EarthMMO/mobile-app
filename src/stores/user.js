@@ -6,7 +6,6 @@ const userStore = (set) => ({
   user: {
     ethereumAddress: "",
     userId: null,
-    jwt: "",
     isSignedIn: false,
     //  email: "",
     //  userId: "",
