@@ -110,7 +110,7 @@ export default function EventsScreen({
                 <Text style={tw`text-3xl font-bold`}>{item.name}</Text>
                 <Button
                   buttonStyle={
-                    "w-3/12 py-1 border-black dark:border-white bg-black dark:bg-white"
+                    "w-3/12 py-1 border-2 border-black dark:border-white bg-black dark:bg-white"
                   }
                   labelStyle={"text-white dark:text-black font-bold"}
                   text={"Claim"}
@@ -127,7 +127,7 @@ export default function EventsScreen({
                 source={{
                   uri: `https://ipfs.io/ipfs/${item.ItemNFTImageHash}`,
                 }}
-                style={tw`w-16 h-16 rounded-xl border-4 border-blue-500`}
+                style={tw`w-16 h-16 rounded-xl border-3 border-blue-500`}
               />
             </View>
           </View>

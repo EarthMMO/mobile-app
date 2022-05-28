@@ -35,7 +35,7 @@ export default function SignInScreen() {
           setIsCreating(false);
         }}
         buttonStyle={
-          "w-10/12 border-black dark:border-white bg-black dark:bg-white"
+          "w-10/12 border-2 border-black dark:border-white bg-black dark:bg-white"
         }
         disabled={isLoading}
         labelStyle={"text-white dark:text-black font-bold"}
@@ -57,7 +57,9 @@ export default function SignInScreen() {
             setIsImporting(false);
           });
         }}
-        buttonStyle={"w-10/12 dark:border-white bg-white dark:bg-neutral-900"}
+        buttonStyle={
+          "w-10/12 border-2 dark:border-white bg-white dark:bg-neutral-900"
+        }
         disabled={isLoading}
         labelStyle={"dark:text-white font-bold"}
         spinner={isImporting}
@@ -75,7 +77,9 @@ export default function SignInScreen() {
             colorScheme === "light" ? "light-content" : "dark-content"
           );
         }}
-        buttonStyle={"w-10/12 dark:border-white bg-white dark:bg-neutral-900"}
+        buttonStyle={
+          "w-10/12 border-2 dark:border-white bg-white dark:bg-neutral-900"
+        }
         disabled={isLoading}
         labelStyle={"dark:text-white font-bold"}
         text={`${colorScheme}`}

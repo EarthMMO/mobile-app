@@ -4,6 +4,12 @@ module.exports = {
   plugins: [
     plugin(({ addUtilities }) => {
       addUtilities({
+        "resize-contain": {
+          resizeMode: `contain`,
+        },
+        "border-3": {
+          borderWidth: 3,
+        },
         "my-shadow-md": {
           elevation: 3,
           shadowColor: `#d3d2f6`,
