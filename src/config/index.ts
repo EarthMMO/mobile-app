@@ -1,7 +1,7 @@
 export const BACKEND_API_URL = "https://api.lookingforparty.xyz";
 
 export const ITEM_CONTRACT_ADDRESS =
-  "0xB6EC7aED47a694f7A39528dfB96AD7cBE6EE2bF3";
+  "0xfDff9371d987214876EBFB3fAcD23B4D80c91f4d";
 
 export const ITEM_CONTRACT_ABI = [
   {
@@ -125,6 +125,25 @@ export const ITEM_CONTRACT_ABI = [
       },
     ],
     name: "URI",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "eventId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "owner",
+        type: "address",
+      },
+    ],
+    name: "eventCreated",
     type: "event",
   },
   {

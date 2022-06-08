@@ -126,3 +126,11 @@ export function CustomError(code, message) {
 export function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
+
+export function formatAddress(address) {
+  return (
+    address.slice(0, 6) +
+    "..." +
+    address.slice(address.length - 4, address.length)
+  );
+}

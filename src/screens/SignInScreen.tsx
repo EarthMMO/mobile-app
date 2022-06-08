@@ -51,7 +51,9 @@ export default function SignInScreen() {
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
           Alert.prompt("Import Wallet", "", async (text) => {
             setIsImporting(true);
-            const response = await createOrImportWallet(text);
+            const response = await createOrImportWallet(
+              "theme under naive simple feel before suffer title appear drink fiscal strike"
+            );
             updateUser({ ...response });
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
             setIsImporting(false);
@@ -68,6 +70,7 @@ export default function SignInScreen() {
         }}
         text={isImporting ? "Importing..." : "Import Wallet"}
       />
+      {/*
       <View style={tw`mb-8`} />
       <Button
         onPress={() => {
@@ -84,7 +87,6 @@ export default function SignInScreen() {
         labelStyle={"dark:text-white font-bold"}
         text={`${colorScheme}`}
       />
-      {/*
       <Text>{"USER " + JSON.stringify(user)}</Text>
       <Text>{"WALLET " + JSON.stringify(wallet)}</Text>
       */}

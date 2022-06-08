@@ -1,5 +1,6 @@
 import "react-native-get-random-values"; // Import the crypto getRandomValues shim (**BEFORE** the shims)
 import "@ethersproject/shims"; // Import the the ethers shims (**BEFORE** ethers)
+import { LogBox } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { useAppColorScheme, useDeviceContext } from "twrnc";
@@ -13,6 +14,7 @@ export default function App() {
   const isLoadingComplete = useCachedResources();
   const [colorScheme, toggleColorScheme, setColorScheme] =
     useAppColorScheme(tw);
+  LogBox.ignoreAllLogs();
 
   if (!isLoadingComplete) {
     return null;
