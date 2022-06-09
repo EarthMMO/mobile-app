@@ -1,4 +1,4 @@
-export const BACKEND_API_URL = "https://api.lookingforparty.xyz";
+export const BACKEND_API_URL = "https://api.earthmmo.com";
 
 export const ITEM_CONTRACT_ADDRESS =
   "0xfDff9371d987214876EBFB3fAcD23B4D80c91f4d";
