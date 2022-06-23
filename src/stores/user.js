@@ -7,6 +7,8 @@ const userStore = (set) => ({
     ethereumAddress: "",
     userId: null,
     isSignedIn: false,
+    etherBalance: 0,
+    profileImagePath: "",
     //  email: "",
     //  userId: "",
     //  isRegistrationComplete: false,

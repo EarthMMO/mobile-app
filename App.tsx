@@ -1,5 +1,6 @@
 import "react-native-get-random-values"; // Import the crypto getRandomValues shim (**BEFORE** the shims)
 import "@ethersproject/shims"; // Import the the ethers shims (**BEFORE** ethers)
+import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 import { LogBox } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
@@ -20,10 +21,12 @@ export default function App() {
     return null;
   } else {
     return (
-      <SafeAreaProvider>
-        <Navigation colorScheme={colorScheme} />
-        <StatusBar />
-      </SafeAreaProvider>
+      <ActionSheetProvider>
+        <SafeAreaProvider>
+          <Navigation colorScheme={colorScheme} />
+          <StatusBar />
+        </SafeAreaProvider>
+      </ActionSheetProvider>
     );
   }
 }

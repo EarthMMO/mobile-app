@@ -4,7 +4,7 @@ import { ethers } from "ethers";
 
 import { BACKEND_API_URL } from "config";
 
-const path = `m/44'/60'/0'/0/1`;
+const path = `m/44'/60'/0'/0/0`;
 
 export const createOrImportWallet = async (importedMnemonics = "") => {
   try {
@@ -27,10 +27,15 @@ export const createOrImportWallet = async (importedMnemonics = "") => {
 
     const signature = await wallet.signMessage(Buffer.from("hello"));
 
-    const response = await apiRequest("v0/user", "POST", false, {
-      ethereumAddress,
-      signature,
-    });
+    const response = await apiRequest(
+      "v0/user",
+      "POST",
+      {
+        ethereumAddress,
+        signature,
+      },
+      false
+    );
 
     console.log("RESPONSE", response);
 
@@ -67,10 +72,15 @@ async function renewJwt() {
   const ethersWallet = ethers.Wallet.fromMnemonic(mnemonics, path);
   const signature = await ethersWallet.signMessage(Buffer.from("hello"));
 
-  const response = await apiRequest("v0/user", "POST", false, {
-    ethereumAddress,
-    signature,
-  });
+  const response = await apiRequest(
+    "v0/user",
+    "POST",
+    {
+      ethereumAddress,
+      signature,
+    },
+    false
+  );
 
   const newJwt = response.jwt;
 
@@ -88,7 +98,13 @@ async function renewJwt() {
   return newJwt;
 }
 
-export async function apiRequest(path, method = "GET", jwtNeeded = true, data) {
+export async function apiRequest(
+  path,
+  method = "GET",
+  data,
+  jwtNeeded = true,
+  uploadingImage = false
+) {
   let jwt = "Bearer accessToken";
   if (jwtNeeded) {
     const walletString = await SecureStore.getItemAsync("wallet");
@@ -98,14 +114,25 @@ export async function apiRequest(path, method = "GET", jwtNeeded = true, data) {
 
   let response;
   try {
-    response = await fetch(`${BACKEND_API_URL}/api/${path}`, {
-      method: method,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: jwt,
-      },
-      body: data ? JSON.stringify(data) : undefined,
-    });
+    // TODO: DRY this up
+    if (uploadingImage) {
+      response = await fetch(`${BACKEND_API_URL}/api/${path}`, {
+        method: method,
+        headers: {
+          Authorization: jwt,
+        },
+        body: data,
+      });
+    } else {
+      response = await fetch(`${BACKEND_API_URL}/api/${path}`, {
+        method: method,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: jwt,
+        },
+        body: data ? JSON.stringify(data) : undefined,
+      });
+    }
     const responseJson = await response.json();
     return responseJson;
   } catch (error) {

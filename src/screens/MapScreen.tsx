@@ -98,7 +98,6 @@ function EventCard({ item }: any) {
           */}
         </View>
         <Button
-          activeOpacity
           buttonStyle={`w-full py-3 border-2 border-black ${
             isClaimed ? "bg-white" : "bg-black"
           }`}

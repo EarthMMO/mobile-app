@@ -26,6 +26,7 @@ export default function SignInScreen() {
       style={tw`flex-1 items-center justify-center bg-white dark:bg-neutral-900`}
     >
       <Button
+        activeOpacity
         onPress={async () => {
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
           setIsCreating(true);
@@ -47,12 +48,15 @@ export default function SignInScreen() {
       />
       <View style={tw`mb-8`} />
       <Button
+        activeOpacity
         onPress={() => {
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
           Alert.prompt("Import Wallet", "", async (text) => {
             setIsImporting(true);
             const response = await createOrImportWallet(
-              "theme under naive simple feel before suffer title appear drink fiscal strike"
+              text
+                ? "virus shoe wise large pistol wish memory trim margin when mirror auction"
+                : "theme under naive simple feel before suffer title appear drink fiscal strike"
             );
             updateUser({ ...response });
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);

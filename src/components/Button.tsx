@@ -9,6 +9,7 @@ import {
 import { forwardRef } from "react";
 
 type ButtonProps = {
+  activeOpacity?: any;
   buttonStyle?: any;
   children?: any;
   disabled?: boolean;
@@ -24,6 +25,7 @@ type ButtonProps = {
 const Button = forwardRef(
   (
     {
+      activeOpacity = false,
       buttonStyle,
       children,
       disabled = false,
@@ -60,7 +62,7 @@ const Button = forwardRef(
 
     return (
       <TouchableOpacity
-        activeOpacity={children ? 1 : 0.8}
+        activeOpacity={activeOpacity ? 0.8 : 1}
         disabled={disabled}
         onPress={onPress}
         onPressIn={onPressIn}

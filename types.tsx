@@ -22,14 +22,21 @@ export type RootStackParamList = {
   NotFound: undefined;
   SettingsModal: undefined;
   DarkMode: undefined;
+  Chats: undefined;
+  Room: undefined;
+  BottomTab: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
   NativeStackScreenProps<RootStackParamList, Screen>;
 
 export type RootTabParamList = {
+  Chats: undefined;
+  Party: undefined;
   Events: undefined;
+  Map: undefined;
   Profile: undefined;
+  Room: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =

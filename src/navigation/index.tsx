@@ -15,13 +15,17 @@ import {
   DarkTheme,
 } from "@react-navigation/native";
 
+import ChatScreen from "screens/ChatScreen";
 import Colors from "constants/Colors";
+import DarkModeScreen from "screens/DarkModeScreen";
 import EventsScreen from "screens/EventsScreen";
 import LinkingConfiguration from "navigation/LinkingConfiguration";
-import DarkModeScreen from "screens/DarkModeScreen";
-import SettingsModalScreen from "screens/SettingsModalScreen";
+import MapScreen from "screens/MapScreen";
 import NotFoundScreen from "screens/NotFoundScreen";
+import PartyScreen from "screens/PartyScreen";
 import ProfileScreen from "screens/ProfileScreen";
+import RoomScreen from "screens/RoomScreen";
+import SettingsModalScreen from "screens/SettingsModalScreen";
 import SignInScreen from "screens/SignInScreen";
 import SplashScreen from "screens/SplashScreen";
 import tw from "utils/tailwind";
@@ -53,11 +57,10 @@ export default function Navigation({
  * https://reactnavigation.org/docs/modal
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
-const ModalStack = createNativeStackNavigator<RootStackParamList>();
 
 const ModalStackView = () => (
-  <ModalStack.Navigator>
-    <ModalStack.Screen
+  <Stack.Navigator>
+    <Stack.Screen
       name="SettingsModal"
       component={SettingsModalScreen}
       options={({ navigation }) => ({
@@ -78,7 +81,7 @@ const ModalStackView = () => (
         ),
       })}
     />
-    <ModalStack.Screen
+    <Stack.Screen
       name="DarkMode"
       component={DarkModeScreen}
       options={{
@@ -90,7 +93,7 @@ const ModalStackView = () => (
         presentation: "card",
       }}
     />
-  </ModalStack.Navigator>
+  </Stack.Navigator>
 );
 
 function RootNavigator() {
@@ -139,7 +142,7 @@ function RootNavigator() {
       ) : (
         <Stack.Screen
           name="Root"
-          component={BottomTabNavigator}
+          component={MainStackView}
           options={{ headerShown: false }}
         />
       )}
@@ -159,6 +162,21 @@ function RootNavigator() {
   );
 }
 
+const MainStackView = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="BottomTab"
+      component={BottomTabNavigator}
+      options={{ headerShown: false }}
+    />
+    <Stack.Screen
+      name="Room"
+      component={RoomScreen}
+      options={{ headerBackTitleVisible: false }}
+    />
+  </Stack.Navigator>
+);
+
 /**
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
  * https://reactnavigation.org/docs/bottom-tab-navigator
@@ -176,12 +194,42 @@ function BottomTabNavigator() {
       }}
     >
       <BottomTab.Screen
+        name="Chats"
+        component={ChatScreen}
+        options={({ navigation }: RootTabScreenProps<"Chat">) => ({
+          title: "Chats",
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon library="Ionicons" name="chatbubbles" color={color} />
+          ),
+        })}
+      />
+      <BottomTab.Screen
+        name="Party"
+        component={PartyScreen}
+        options={({ navigation }: RootTabScreenProps<"Party">) => ({
+          title: "Party",
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon library="Ionicons" name="people" color={color} />
+          ),
+        })}
+      />
+      <BottomTab.Screen
         name="Events"
         component={EventsScreen}
         options={({ navigation }: RootTabScreenProps<"Events">) => ({
           title: "Events",
           tabBarIcon: ({ color }) => (
             <TabBarIcon library="MaterialIcons" name="event" color={color} />
+          ),
+        })}
+      />
+      <BottomTab.Screen
+        name="Map"
+        component={MapScreen}
+        options={({ navigation }: RootTabScreenProps<"Map">) => ({
+          title: "Map",
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon library="Ionicons" name="map" color={color} />
           ),
         })}
       />
